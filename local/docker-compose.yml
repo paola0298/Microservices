@@ -1,8 +1,15 @@
 version: '3.3'
+
 services:
+
   liberty:
     build: ../liberty-container
     ports: 
       - "8080:9080"
-    
+
+  frontend_app:
+    build: ../apache-container/
+    ports:
+      - "80:80"
+
 
