@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<USERS>
+    <USER>
+        <Name>Marlon</Name>
+        <Password>hola</Password>
+        <Permission>Read</Permission>
+    </USER>
+    <USER>
+        <Name>Paola</Name>
+        <Password>adios</Password>
+        <Permission>Read</Permission>
+    </USER>
+    <USER>
+        <Name>Misinga</Name>
+        <Password>hola</Password>
+        <Permission>Read</Permission>
+    </USER>
+</USERS>
+

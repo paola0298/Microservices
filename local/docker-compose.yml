@@ -4,5 +4,9 @@ services:
     build: ../liberty-container
     ports: 
       - "8080:9080"
-    
+  
+  autorization:
+    build: ../NodeJS_container
+    ports:
+      - "9090:8080"
 

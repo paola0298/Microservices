@@ -1,2 +1,13 @@
 FROM node:10
-EXPOSE 8080
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY package.json .
+
+RUN npm install
+
+COPY ./ .
+
+EXPOSE 3070
+
+CMD ["npm", "start"]
