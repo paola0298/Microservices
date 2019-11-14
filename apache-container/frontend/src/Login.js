@@ -2,18 +2,30 @@ import React from 'react';
 import logo from './new_logo.png';
 
 class LoginWindow extends React.Component {
-    
-    getUserData() {
+
+    getUserData = (e) => {
+
         var usr = document.getElementById("user_field");
         var pass = document.getElementById("pass_field");
         var msg = document.getElementById("login_msg");
-        console.log("User: " + usr.value + ",\nPass: " + pass.value + ".");
 
         //TODO connect to nodejs container to verify user
         var response = "";
-        if (response === "Success") {
-            //Load files window
+        
+        if (response === "success") {
+
+            //Parse and get user info
+            let user = {
+                name: usr.value,
+                permissions: "rw",
+                usedStorage: 15,
+                totalStorage: 100
+            }
+
+            this.props.loginSuccess(user);
+
         } else {
+            console.log("Login failed");
             //Show error msg
             usr.value = "";
             pass.value = "";

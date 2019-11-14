@@ -14,12 +14,12 @@ import './components/files.css'
 
 class FilesWindow extends React.Component {
     state = {
-        files: [
-            {name:"File 1", size:1234, date:"12:00", id: 0},
-            {name:"File 2", size:50, date:"2:00", id: 1},
-            {name:"File 3", size:32, date:"5:00", id: 2},
-            {name:"File 1", size:1234, date:"12:00", id: 3}
-        ]
+        files: []
+    }
+
+    componentDidMount() {
+        //TODO retrieve use files from mysql database and populate files var.
+        console.log("Retrieving files..");
     }
 
     render () {
@@ -33,9 +33,9 @@ class FilesWindow extends React.Component {
             </div>
             <div className="content">
                 <div className="sidebar">
-                    <UserGreeting name="Marlon"/>
+                    <UserGreeting name={this.props.user.name}/>
                     <div className="separator" />
-                    <StorageIndicator percentage="10" total="500"/>
+                    <StorageIndicator percentage={this.props.user.usedStorage} total={this.props.user.totalStorage} />
                 </div>
                 <div className="files-container">
                     <div className="file-header">
@@ -46,7 +46,7 @@ class FilesWindow extends React.Component {
                         </div>
                         <div className="files-controls">
                             <i className="fas fa-upload"></i>
-                            <form method="post" enctype="multipart/form-data">
+                            <form method="post" encType="multipart/form-data">
                                 <input type="file" name="new_file"/>
                                 <input type="submit" name="Submit" />    
                             </form>

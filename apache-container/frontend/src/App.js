@@ -8,11 +8,26 @@ import FilesWindow from './FilesWindow.js';
 
 class App extends React.Component {
 
-    render() {
-        // return <FilesWindow />
-        return <LoginWindow />
+    state = {
+        loggedIn: 0,
+        loggedUser: null
     }
 
+    loginSuccess = (user) => {
+        let logged_user = user;
+        this.setState({
+            loggedIn: 1,
+            loggedUser: logged_user
+        });
+    }
+
+    render() {
+        if (this.state.loggedIn === 1) {
+            return <FilesWindow user={this.state.loggedUser} />
+        } else {
+            return <LoginWindow loginSuccess={this.loginSuccess} />
+        }
+    }
 }
 
 export default App;
