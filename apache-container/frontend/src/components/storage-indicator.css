@@ -1,0 +1,16 @@
+.storage-indicator {
+    padding: 5px;
+}
+
+.indicator-background {
+    height: 4px;
+    width: 100%;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #e4e4e4;
+}
+
+.indicator-foreground {
+    height: 4px;
+    background-color: #0a82d1;
+}
