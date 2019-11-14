@@ -12,4 +12,9 @@ services:
     ports:
       - "80:80"
 
+  
+  autorization:
+    build: ../NodeJS_container
+    ports:
+      - "9090:8080"
 
