@@ -4,17 +4,17 @@
     <USER>
         <Name>Marlon</Name>
         <Password>hola</Password>
-        <Permission>Read</Permission>
+        <Permission>rw</Permission>
     </USER>
     <USER>
         <Name>Paola</Name>
         <Password>adios</Password>
-        <Permission>Read</Permission>
+        <Permission>rw</Permission>
     </USER>
     <USER>
         <Name>Misinga</Name>
         <Password>hola</Password>
-        <Permission>Read</Permission>
+        <Permission>r</Permission>
     </USER>
 </USERS>
 
