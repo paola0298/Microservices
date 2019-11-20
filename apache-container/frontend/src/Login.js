@@ -10,28 +10,57 @@ class LoginWindow extends React.Component {
         var msg = document.getElementById("login_msg");
 
         //TODO connect to nodejs container to verify user
-        var response = "";
         
-        if (response === "success") {
+        const http = new XMLHttpRequest();
+        http.open("GET", `http://localhost:8081/users/u=${usr.value}&p=${pass.value}`, true);
+        http.send();
+        http.onreadystatechange = () => {
+            if (http.readyState === 4 && http.status === 200) {
+                console.log(http.responseText);
+                this.handleResponse(usr, pass, msg, http.responseText);
+            }
+        }
+    }
+
+    handleResponse(usr, pass, msg, response) {
+        console.log("Response:" + response);
+        var json = JSON.parse(response);
+        console.log("JSON: " + json);
+
+        console.log("Status: " + json.status);
+
+        if (json.status === "success") {
 
             //Parse and get user info
             let user = {
-                name: usr.value,
-                permissions: "rw",
+                name: json.user,
+                permissions: json.permissions,
                 usedStorage: 15,
                 totalStorage: 100
             }
 
             this.props.loginSuccess(user);
 
+        } else if (json.status === "password_incorrect") {
+            //Show error msg
+            console.log("Password incorrect");
+            pass.value = "";
+            this.showMessage("Contraseña incorrecta", msg);
         } else {
             console.log("Login failed");
-            //Show error msg
             usr.value = "";
             pass.value = "";
-            msg.value = "Error al iniciar sesión";
-            msg.style.visibility = "visible";
+            this.showMessage("Usuario o contraseña incorrectos", msg);
         }
+    }
+
+    showMessage(text, span) {
+        span.style.visibility = "hidden";
+        while (span.firstChild) {
+            span.removeChild(span.firstChild);
+        }
+        span.appendChild(document.createTextNode(text));
+        span.style.visibility = "visible";
     }
 
     render() {
@@ -52,7 +81,7 @@ class LoginWindow extends React.Component {
                             <input type="password" className="password-field" name="password" id="pass_field"/>
                         </div>
                         <div className="login-msg">
-                            <span id="login_msg">Usuario o contraseña incorrectos</span>
+                            <span id="login_msg"></span>
                         </div>
                         <button className="login-button" onClick={this.getUserData}>
                             Ingresar
