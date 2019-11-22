@@ -1,14 +1,31 @@
 version: '3.3'
+
 services:
+
   liberty:
     build: ../liberty-container
     ports: 
       - "4005:5005"
+    networks: 
+      - backend
+
+  frontend_app:
+    build: ../apache-container/
+    ports:
+      - "80:80"
+    depends_on:
+      - autorization
+    networks: 
+      - backend
+
   
   autorization:
+    container_name: authorization
     build: ../NodeJS_container
     ports:
       - "8080:8080"
+    networks: 
+      - backend
 
   db:
     # image: mysql

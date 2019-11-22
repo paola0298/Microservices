@@ -1,7 +1,8 @@
 var express = require("express"),
     bodyParser =require("body-parser"),
+    cors = require("cors"),
     app = express(),
-    port = 8080;
+    port = 8081;
 
 // // array to hold users
 // const users = [{firstName:"fnam1",lastName:"lnam1",userName:"username1"}];
@@ -36,52 +37,77 @@ fs.readFile("users.xml", "utf-8", function(err, data) {
     });
 });
 
-
+app.use(cors());
 
 app.use(bodyParser.json());
 
 app.listen(port, function(err) {
-    console.log("running server on from port:::::::" + port);
+    console.log("running server on from port " + port);
 });
 
 app.get("/", function(req, res) {
-    res.send("App works!!");
+    var response = {
+        "status": "error"
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.json(JSON.stringify(response));
 })
 
 // request to get the information of user
 app.get("/users/u=:userName&p=:password", function(req, res) {
+    res.setHeader('Content-Type', 'application/json');
     var size = Object.keys(users.USERS.USER).length;
     var pass = req.params.password;
     var userTo = req.params.userName;
     var user;
-    var response = "";
+
+    var response;
     console.log(size);
+
     for (var i = 0; i<size; i++) {
         user = users.USERS.USER[i].Name[0];
+        
         console.log(user);
         console.log(userTo);
         if (user == userTo) {
             var passw = user = users.USERS.USER[i].Password[0];
+            var permissions = users.USERS.USER[i].Permission[0];
             if (pass == passw) {
-                user = "Exists";
-                //usuario y contrasenia correctos
-                res.json(user);
-                return user;
+                
+                response = {
+                    "status": "success",
+                    "user": userTo,
+                    "permissions": permissions
+                }
+
             } else {
-                user = "Password incorrect";
-                //contrasenia incorrecta
-                res.json(user);
-                return user;
+                response = {
+                    "status": "password_incorrect",
+                    "user": userTo,
+                    "permissions": "" 
+                }
             }
+
+            res.send(JSON.stringify(response));
+            return user;
+
         } else if (i+1 == size) {
-            user = "User incorrect";
-            //Usuario incorrecto
-            res.json(user);
+            var response = {
+                "status": "failed",
+                "user": "",
+                "permissions": ""
+            }
+
+            res.send(JSON.stringify(response));
             return user;
         }
     }
-    user = "Not found";
-    res.json(user);
+
+    response = {
+        "status": "error"
+    };
+
+    res.send(JSON.stringify(response));
 })
 
 app.get("/users", function(req, res) {
