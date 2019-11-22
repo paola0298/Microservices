@@ -1,12 +1,42 @@
 version: '3.3'
 services:
-  liberty:
-    build: ../liberty-container
-    ports: 
-      - "8080:9080"
+  # liberty:
+  #   build: ../liberty-container
+  #   ports: 
+  #     - "4005:5005"
   
-  autorization:
-    build: ../NodeJS_container
-    ports:
-      - "9090:8080"
+  # autorization:
+  #   build: ../NodeJS_container
+  #   ports:
+  #     - "8080:8080"
 
+  db:
+    # image: mysql
+    build: ../sql-container
+    volumes:
+      - "./mysql_data:/var/lib/mysql"
+    container_name: mysql1
+    # networks: 
+    #   - files-mysql
+    # # command: --default-authentication-plugin=mysql_native_password
+    # restart: always
+    ports:
+      - "3306:3306"
+  
+  db-jdbc:
+    build: ../manage
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    # networks: 
+    #   - files-mysql
+
+  # networks: 
+  #   - files-mysql
+
+  # admin:    
+  #   image: adminer   
+  #   restart: always 
+  #   ports:      
+  #     - "9080:9080"
