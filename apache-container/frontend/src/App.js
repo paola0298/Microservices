@@ -9,6 +9,7 @@ import FilesWindow from './FilesWindow.js';
 class App extends React.Component {
 
     state = {
+        debug: true,
         loggedIn: 0,
         loggedUser: null
     }
@@ -22,10 +23,22 @@ class App extends React.Component {
     }
 
     render() {
-        if (this.state.loggedIn === 1) {
-            return <FilesWindow user={this.state.loggedUser} />
+        if (this.state.debug) {
+            let test_user = {
+                name: "Paola",
+                permissions: "rw",
+                usedStorage: 15,
+                totalStorage: 100
+            }
+
+            return <FilesWindow user={test_user} />;
+
         } else {
-            return <LoginWindow loginSuccess={this.loginSuccess} />
+            if (this.state.loggedIn === 1) {
+                return <FilesWindow user={this.state.loggedUser} />
+            } else {
+                return <LoginWindow loginSuccess={this.loginSuccess} />
+            }
         }
     }
 }

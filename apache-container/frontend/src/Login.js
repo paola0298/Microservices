@@ -15,17 +15,21 @@ class LoginWindow extends React.Component {
         http.open("GET", `http://localhost:8081/users/u=${usr.value}&p=${pass.value}`, true);
         http.send();
         http.onreadystatechange = () => {
+            console.log("[INFO] Connected successfully to authentication service");
             if (http.readyState === 4 && http.status === 200) {
-                console.log(http.responseText);
+                // console.log(http.responseText);
                 this.handleResponse(usr, pass, msg, http.responseText);
             }
+        }
+        http.ontimeout = () => {
+            console.log("[ERROR] Could not connect to authentication service")
         }
     }
 
     handleResponse(usr, pass, msg, response) {
-        console.log("Response:" + response);
+        // console.log("Response:" + response);
         var json = JSON.parse(response);
-        console.log("JSON: " + json);
+        console.log("JSON: " + JSON.stringify(json));
 
         console.log("Status: " + json.status);
 
@@ -43,11 +47,11 @@ class LoginWindow extends React.Component {
 
         } else if (json.status === "password_incorrect") {
             //Show error msg
-            console.log("Password incorrect");
+            // console.log("Password incorrect");
             pass.value = "";
             this.showMessage("Contraseña incorrecta", msg);
         } else {
-            console.log("Login failed");
+            // console.log("Login failed");
             usr.value = "";
             pass.value = "";
             this.showMessage("Usuario o contraseña incorrectos", msg);
