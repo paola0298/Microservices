@@ -10,7 +10,6 @@ import StorageIndicator from './components/storage-indicator.js';
 import './components/storage-indicator.css';
 import UploadModal from './components/modal.js';
 import './components/modal.css';
-
 import Files from './components/files.js';
 import './components/files.css';
 
@@ -37,15 +36,14 @@ class FilesWindow extends React.Component {
 
         // When the user clicks anywhere outside of the modal, close it
         window.onclick = function(event) {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        }
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
         } 
     }
 
     openUploadModal() {
         console.log("Showing modal...");
-
         var modal = document.getElementById("modal-container");
         modal.style.display = "block";
     }

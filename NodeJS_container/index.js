@@ -67,7 +67,7 @@ app.get("/users/u=:userName&p=:password", (req, res) => {
                     "user": current_user,
                     "permissions": current_permissions
                 }
-            } else {
+            } else {    
                 //Password incorrect
                 response = {
                     "status": "password_incorrect",

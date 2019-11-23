@@ -11,19 +11,17 @@ class LoginWindow extends React.Component {
         var auth_request = `http://localhost:8001/users/u=${usr.value}&p=${pass.value}`;
 
         fetch(auth_request).then((response) => {
-            console.log("Response: " + http.responseText);
-            this.handleResponse(usr, pass, msg, http.responseText);
+            return response.json();
         }).then((data) => {
-            console.log("Data: " + data);
+            console.log("JSON: " + JSON.stringify(data));
+            this.handleResponse(usr, pass, msg, data);
         }).catch(() => {
             console.log("Failed");
             this.showMessage("No se puede conectar con el servicio de autenticación, inténtelo de nuevo", msg);
         });
     }
 
-    handleResponse(usr, pass, msg, response) {
-        var json = JSON.parse(response);
-        console.log("JSON: " + JSON.stringify(json));
+    handleResponse(usr, pass, msg, json) {
 
         switch (json.status) {
             case "success":

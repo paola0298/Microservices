@@ -1,3 +1,4 @@
 .user-greeting-label {
     font-weight: normal;
+    text-transform: capitalize !important;
 }
