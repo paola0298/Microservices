@@ -1,4 +1,7 @@
 FROM node:10
+
+# ADD ./nodejs-config.yml /usr/share/app/config/
+
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
@@ -8,6 +11,5 @@ RUN npm install
 
 COPY ./ .
 
-EXPOSE 8080
-
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
+CMD npm start
