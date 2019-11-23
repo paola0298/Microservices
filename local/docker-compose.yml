@@ -37,6 +37,7 @@ services:
     build: ../manage
     ports:
       - "9080:9080"
+    container_name: dbjdbc
     depends_on:
       - db
     networks: 
