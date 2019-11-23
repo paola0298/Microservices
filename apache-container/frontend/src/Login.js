@@ -11,8 +11,8 @@ class LoginWindow extends React.Component {
         var auth_request = `http://localhost:8001/users/u=${usr.value}&p=${pass.value}`;
 
         fetch(auth_request).then((response) => {
-            console.log("Response: " + http.responseText);
-            this.handleResponse(usr, pass, msg, http.responseText);
+            console.log("Response: " + response.json());
+            this.handleResponse(usr, pass, msg, response);
         }).then((data) => {
             console.log("Data: " + data);
         }).catch(() => {
