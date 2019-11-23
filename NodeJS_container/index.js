@@ -1,118 +1,97 @@
 var express = require("express"),
     bodyParser =require("body-parser"),
     app = express(),
-    port = 8080;
+    port = 3001,
+    users;
 
-const cors = require('cors');
+const cors = require('cors')
 
-// // array to hold users
-// const users = [{firstName:"fnam1",lastName:"lnam1",userName:"username1"}];
-
-// // Default user
-// app.get("/", function(req, res) {
-//     res.send("App works!!");
-// })
-
-// // request to post the user
-// // req.body has object of type {firstName:"fnam1",lastName:"lnam1",userName:"username1"}
-// app.post("/user", function(req, res) {
-//     users.push(req.body);
-//     res.json(users);
-// })
-
-var fs = require("fs"),
-    xml2js = require("xml2js");
-
-var users;
-
-var parser = new xml2js.Parser();
-fs.readFile("users.xml", "utf-8", function(err, data) {
-    if (err) console.log(err);
-    console.log(data);
-    parser.parseString(data, function(err, result) {
-        if (err) console.log(err);
-        console.dir(result);
-        console.log("Done");
-        users = result;
-
-    });
-});
+app.use(bodyParser.json());
 
 app.use(cors());
 app.options("*", cors());
 
-app.use(bodyParser.json());
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header(
+//         "Access-Control-Allow-Headers",
+//         "Origin, X-Requested-With, Content-Type, Accept"
+//     );
+//     next();
+// });
 
-app.listen(port, function(err) {
-    console.log("running server on from port " + port);
+var fs = require("fs"),
+    xml2js = require("xml2js");
+var parser = new xml2js.Parser();
+fs.readFile("users.xml", "utf-8", function(err, data) {
+    if (err) console.log(err);
+    // console.log(data);
+    parser.parseString(data, function(err, result) {
+        if (err) console.log(err);
+        // console.dir(result);
+        // console.log("Done");
+        users = result;
+    });
 });
 
 app.get("/", function(req, res) {
     var response = {
-        "status": "error"
+        "status": "App working correctly"
     }
     res.setHeader('Content-Type', 'application/json');
     res.json(JSON.stringify(response));
 })
 
 // request to get the information of user
-app.get("/users/u=:userName&p=:password", function(req, res) {
-    res.setHeader('Content-Type', 'application/json');
-    var size = Object.keys(users.USERS.USER).length;
-    var pass = req.params.password;
-    var userTo = req.params.userName;
-    var user;
+app.get("/users/u=:userName&p=:password", (req, res) => {
+    res.header("Content-Type", "application/json");
 
-    var response;
-    console.log(size);
+    var size = Object.keys(users.USERS.USER).length,
+        pass_request = req.params.password,
+        user_request = req.params.userName.toUpperCase(),
+        response;
 
-    for (var i = 0; i<size; i++) {
-        user = users.USERS.USER[i].Name[0];
-        
-        console.log(user);
-        console.log(userTo);
-        if (user == userTo) {
-            var passw = user = users.USERS.USER[i].Password[0];
-            var permissions = users.USERS.USER[i].Permission[0];
-            if (pass == passw) {
-                
+    console.log("User entered: " + user_request);
+    console.log("Password entered: " + pass_request);
+
+    for (let i = 0; i < size; i++) {
+        var current_user = users.USERS.USER[i].Name[0].toUpperCase(),
+            current_password = users.USERS.USER[i].Password[0],
+            current_permissions = users.USERS.USER[i].Permission[0];
+        if (user_request === current_user) {
+            // User exists, checking password
+            if (pass_request === current_password) {
+                // Password correct
                 response = {
                     "status": "success",
-                    "user": userTo,
-                    "permissions": permissions
+                    "user": current_user,
+                    "permissions": current_permissions
                 }
-
             } else {
+                //Password incorrect
                 response = {
                     "status": "password_incorrect",
-                    "user": userTo,
-                    "permissions": "" 
+                    "user": current_user,
+                    "permissions": ""
                 }
             }
-
             res.send(JSON.stringify(response));
-            return user;
-
-        } else if (i+1 == size) {
-            var response = {
-                "status": "failed",
-                "user": "",
-                "permissions": ""
-            }
-
-            res.send(JSON.stringify(response));
-            return user;
-        }
+            return;
+        } 
     }
-
     response = {
-        "status": "error"
-    };
-
+        "status" : "failed",
+        "user": "",
+        "permissions": ""
+    }
     res.send(JSON.stringify(response));
-})
+});
 
 app.get("/users", function(req, res) {
-    res.json(users);
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify(users));
 })
 
+app.listen(port, function(err) {
+    console.log("Server started on port " + port);
+});

@@ -2,32 +2,30 @@ version: '3.3'
 
 services:
 
-  frontend_app:
+  frontend:
+    container_name: frontend
     build: ../apache-container/
+    hostname: frontend:80
     ports:
       - "80:80"
-    # depends_on:
-    #   - autorization
+    depends_on:
+      - authorization
     networks: 
       - backend
 
-  
-  # authorization:
-  #   container_name: authorization
-  #   build: ../NodeJS_container
-  #   ports:
-  #     - "8080:8080"
-  #   networks: 
-  #     - backend
+  authorization:
+    container_name: authorization
+    build: ../NodeJS_container
+    ports:
+      - "8001:3001"
+    networks: 
+      - backend
 
   db:
-    # image: mysql
     build: ../sql-container
     volumes:
       - "./mysql_data:/var/lib/mysql"
     container_name: mysql1
-    # networks: 
-    #   - files-mysql
     # # command: --default-authentication-plugin=mysql_native_password
     # restart: always
     ports:
