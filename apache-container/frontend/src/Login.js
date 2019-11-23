@@ -4,60 +4,56 @@ import logo from './new_logo.png';
 class LoginWindow extends React.Component {
 
     getUserData = (e) => {
+        var usr = document.getElementById("user_field"),
+            pass = document.getElementById("pass_field"),
+            msg = document.getElementById("login_msg");
 
-        var usr = document.getElementById("user_field");
-        var pass = document.getElementById("pass_field");
-        var msg = document.getElementById("login_msg");
+        var auth_request = `http://localhost:8001/users/u=${usr.value}&p=${pass.value}`;
 
-        //TODO connect to nodejs container to verify user
-        
         const http = new XMLHttpRequest();
-        http.open("GET", `//authorization:8080/users/u=${usr.value}&p=${pass.value}`, true);
+        http.open("GET", auth_request, true);
         http.send();
-        http.onreadystatechange = () => {
-            console.log("[INFO] Connected successfully to authentication service");
-            console.log(http.responseText);
-            if (http.readyState === 4 && http.status === 200) {
-                console.log(http.responseText);
-                this.handleResponse(usr, pass, msg, http.responseText);
-            } else {
-                console.log("Not ready");
-            }
+        http.onload = () => {
+            console.log("Response: " + http.responseText);
+            this.handleResponse(usr, pass, msg, http.responseText);
         }
         http.ontimeout = () => {
-            console.log("[ERROR] Could not connect to authentication service")
+            console.log("Error");
+            this.showMessage("No se puede conectar con el servicio de autenticación, inténtelo de nuevo")
         }
     }
 
     handleResponse(usr, pass, msg, response) {
-        // console.log("Response:" + response);
         var json = JSON.parse(response);
         console.log("JSON: " + JSON.stringify(json));
 
-        console.log("Status: " + json.status);
+        switch (json.status) {
+            case "success":
+                //Parse and get user info
+                let user = {
+                    name: json.user,
+                    permissions: json.permissions,
+                    usedStorage: 15,
+                    totalStorage: 100
+                }
+                this.props.loginSuccess(user);
+                break;
 
-        if (json.status === "success") {
+            case "password_incorrect":
+                //Show error message
+                pass.value = "";
+                this.showMessage("Contraseña incorrecta", msg);
+                break;
+                
+            case "failed":
+                usr.value = "";
+                pass.value = "";
+                this.showMessage("Usuario o contraseña incorrectos", msg);
+                break;
 
-            //Parse and get user info
-            let user = {
-                name: json.user,
-                permissions: json.permissions,
-                usedStorage: 15,
-                totalStorage: 100
-            }
-
-            this.props.loginSuccess(user);
-
-        } else if (json.status === "password_incorrect") {
-            //Show error msg
-            // console.log("Password incorrect");
-            pass.value = "";
-            this.showMessage("Contraseña incorrecta", msg);
-        } else {
-            // console.log("Login failed");
-            usr.value = "";
-            pass.value = "";
-            this.showMessage("Usuario o contraseña incorrectos", msg);
+            default:
+                this.showMessage("No se puede conectar con el servicio de autenticación, inténtelo de nuevo", msg);
+                break;
         }
     }
 

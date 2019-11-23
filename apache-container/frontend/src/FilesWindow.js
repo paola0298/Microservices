@@ -41,13 +41,6 @@ class FilesWindow extends React.Component {
             modal.style.display = "none";
         }
         } 
-
-        fetch("http://localhost:8081").then(function(response) {
-            console.log(response.responseText);
-
-        }).catch(function() {
-            console.log("Failed to retrieve files..");
-        });
     }
 
     openUploadModal() {
