@@ -10,17 +10,15 @@ class LoginWindow extends React.Component {
 
         var auth_request = `http://localhost:8001/users/u=${usr.value}&p=${pass.value}`;
 
-        const http = new XMLHttpRequest();
-        http.open("GET", auth_request, true);
-        http.send();
-        http.onload = () => {
+        fetch(auth_request).then((response) => {
             console.log("Response: " + http.responseText);
             this.handleResponse(usr, pass, msg, http.responseText);
-        }
-        http.ontimeout = () => {
-            console.log("Error");
-            this.showMessage("No se puede conectar con el servicio de autenticación, inténtelo de nuevo")
-        }
+        }).then((data) => {
+            console.log("Data: " + data);
+        }).catch(() => {
+            console.log("Failed");
+            this.showMessage("No se puede conectar con el servicio de autenticación, inténtelo de nuevo", msg);
+        });
     }
 
     handleResponse(usr, pass, msg, response) {
