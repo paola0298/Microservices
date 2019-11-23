@@ -80,7 +80,28 @@
   font-weight: bold;
   color: #ffffff;
   background-color: #0a82d1;
+  padding-left: 38px;
 }
+
+div.file-item {
+  display: flex;
+  flex-flow: row nowrap;
+  flex: 1 100%;
+  margin-left: 5px;
+}
+
+div.file-name {
+  flex: 0 0 40%;
+}
+
+div.file-size {
+  flex: 0 0 20%;
+}
+
+div.file-date {
+  flex: 0 0 20%; 
+}
+
 
 .files-controls {
   flex: 1 2%;

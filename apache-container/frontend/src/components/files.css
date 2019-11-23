@@ -23,9 +23,18 @@
     justify-content: space-evenly;
 }
 .file-name {
-    flex: 1 100%;
+    flex: 0 0 40%;
     overflow: hidden;
 }
+
+.file-size {
+    flex: 0 0 20%;
+}
+
+.file-date {
+    flex: 0 0 20%;
+}
+
 .control {
     border: none;
     background: none;

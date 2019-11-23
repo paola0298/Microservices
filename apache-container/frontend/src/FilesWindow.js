@@ -46,39 +46,32 @@ class FilesWindow extends React.Component {
 
         var requestString = "http://localhost:9080/files/" + this.props.user.name; 
 
-        console.log("Sending request to " + requestString);
+        fetch(requestString).then((response) => {
+            return response.json();
+        }).then ((data) => {
+            console.log("JSON: " + JSON.stringify(data));
+            this.handleResponse(data);
+        }).catch(()=> {
+            console.log("Failed");
+        });
+    }
 
-        const http = new XMLHttpRequest();
-        http.open("GET", requestString, true);
-        http.send();
+    handleResponse(json) {
+        let filesArray = [];
 
-        http.onload = () => {
-            console.log("Response: " + http.responseText);
+        for (var i = 0; i<json.length; i++) {
+            console.log(json[i]);
+            var file = {
+                id: i,
+                name: json[i].fileName,
+                size: json[i].size,
+                date: json[i].date
+            }
+            filesArray.push(file);
         }
-        http.ontimeout = () => {
-            console.log("Request timeout");
-        }
-        // http.onreadystatechange = () => {
-        //     console.log("[INFO] Connected successfully to mysql jdbc service");
-        //     console.log(http.responseText);
-        //     if (http.readyState === 4 && http.status === 200) {
-        //         console.log(http.responseText);
-        //         // this.handleResponse(usr, pass, msg, http.responseText);
-        //     } else {
-        //         console.log("Not ready");
-        //     }
-        // }
-        // http.ontimeout = () => {
-        //     console.log("[ERROR] Could not connect to mysql jdbc service")
-        // }
-
-
-        // fetch(requestString).then(function(response) {
-        //         console.log(response.responseText);
-    
-        //     }).catch(function() {
-        //         console.log("Failed to retrieve files..");
-        //     });
+        this.setState({
+            files:filesArray
+        });
     }
 
     openUploadModal() {
@@ -109,6 +102,12 @@ class FilesWindow extends React.Component {
                             <div className="file-item">
                                 <div className="file-name">
                                     <span>Nombre</span>
+                                </div>
+                                <div className="file-size">
+                                    <span>Tamaño</span>
+                                </div>
+                                <div className="file-date">
+                                    <span>Fecha de creación</span>
                                 </div>
                             </div>
                             <div className="files-controls">
