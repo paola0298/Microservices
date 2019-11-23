@@ -1,8 +1,9 @@
 var express = require("express"),
     bodyParser =require("body-parser"),
-    cors = require("cors"),
     app = express(),
-    port = 8081;
+    port = 8080;
+
+const cors = require('cors');
 
 // // array to hold users
 // const users = [{firstName:"fnam1",lastName:"lnam1",userName:"username1"}];
@@ -38,6 +39,7 @@ fs.readFile("users.xml", "utf-8", function(err, data) {
 });
 
 app.use(cors());
+app.options("*", cors());
 
 app.use(bodyParser.json());
 

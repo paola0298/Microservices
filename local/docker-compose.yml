@@ -2,30 +2,23 @@ version: '3.3'
 
 services:
 
-  liberty:
-    build: ../liberty-container
-    ports: 
-      - "4005:5005"
-    networks: 
-      - backend
-
   frontend_app:
     build: ../apache-container/
     ports:
       - "80:80"
-    depends_on:
-      - autorization
+    # depends_on:
+    #   - autorization
     networks: 
       - backend
 
   
-  autorization:
-    container_name: authorization
-    build: ../NodeJS_container
-    ports:
-      - "8080:8080"
-    networks: 
-      - backend
+  # authorization:
+  #   container_name: authorization
+  #   build: ../NodeJS_container
+  #   ports:
+  #     - "8080:8080"
+  #   networks: 
+  #     - backend
 
   db:
     # image: mysql
@@ -46,17 +39,12 @@ services:
     build: ../manage
     ports:
       - "9080:9080"
-    # depends_on:
-    #   - db
+    container_name: dbjdbc
+    depends_on:
+      - db
     networks: 
       - backend
 
 networks: 
   backend:
     driver: bridge
-
-  # admin:    
-  #   image: adminer   
-  #   restart: always 
-  #   ports:      
-  #     - "9080:9080"

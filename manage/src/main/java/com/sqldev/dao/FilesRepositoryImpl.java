@@ -66,6 +66,12 @@ public class FilesRepositoryImpl implements FilesRepository {
         List<Files> filesList = jdbcTemplate.query(findUser, new FileRowMapper(), userName);
         return filesList;
     }
+
+    @Override
+    public String getUserFile(String userName, String fileName) {
+        String findFile = "SELECT file FROM files WHERE userName=? AND fileName=?";
+        return jdbcTemplate.queryForObject(findFile, new Object[]{userName, fileName}, String.class);
+    }
 //    @Override
 //    public List<Files> getAllFiles() {
 //        String sql = "SELECT * FROM employee";

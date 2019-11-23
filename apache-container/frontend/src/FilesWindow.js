@@ -16,6 +16,9 @@ import './components/files.css';
 
 
 class FilesWindow extends React.Component {
+    // this.props.user;
+
+
     state = {
         files: []
     }
@@ -42,12 +45,41 @@ class FilesWindow extends React.Component {
         }
         } 
 
-        fetch("http://localhost:8081").then(function(response) {
-            console.log(response.responseText);
+        var requestString = "http://localhost:9080/files/" + this.props.user.name; 
 
-        }).catch(function() {
-            console.log("Failed to retrieve files..");
-        });
+        console.log("Sending request to " + requestString);
+
+        const http = new XMLHttpRequest();
+        http.open("GET", requestString, true);
+        http.send();
+
+        http.onload = () => {
+            console.log("Response: " + http.responseText);
+        }
+        http.ontimeout = () => {
+            console.log("Request timeout");
+        }
+        // http.onreadystatechange = () => {
+        //     console.log("[INFO] Connected successfully to mysql jdbc service");
+        //     console.log(http.responseText);
+        //     if (http.readyState === 4 && http.status === 200) {
+        //         console.log(http.responseText);
+        //         // this.handleResponse(usr, pass, msg, http.responseText);
+        //     } else {
+        //         console.log("Not ready");
+        //     }
+        // }
+        // http.ontimeout = () => {
+        //     console.log("[ERROR] Could not connect to mysql jdbc service")
+        // }
+
+
+        // fetch(requestString).then(function(response) {
+        //         console.log(response.responseText);
+    
+        //     }).catch(function() {
+        //         console.log("Failed to retrieve files..");
+        //     });
     }
 
     openUploadModal() {

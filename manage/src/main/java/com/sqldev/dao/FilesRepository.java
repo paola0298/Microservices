@@ -10,6 +10,7 @@ public interface FilesRepository {
     public abstract void deleteFileById(Integer fileId);
     public abstract List<Files> findAll();
     public abstract List<Files> getFileByUser(String userName);
+    public abstract String getUserFile(String userName, String fileName);
 
 
 }

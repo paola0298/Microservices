@@ -12,7 +12,7 @@ class LoginWindow extends React.Component {
         //TODO connect to nodejs container to verify user
         
         const http = new XMLHttpRequest();
-        http.open("GET", `//authorization:8080/users/u=${usr.value}&p=${pass.value}`, true);
+        http.open("GET", `http://localhost:8080/users/u=${usr.value}&p=${pass.value}`, true);
         http.send();
         http.onreadystatechange = () => {
             console.log("[INFO] Connected successfully to authentication service");
