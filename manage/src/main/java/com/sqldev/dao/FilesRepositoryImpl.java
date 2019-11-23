@@ -29,8 +29,8 @@ public class FilesRepositoryImpl implements FilesRepository {
 
     @Override
     public void createFile(Files file) {
-        String createFileSql = "INSERT INTO files(userName, file, fileName, size, dateOfCreation) VALUES (?, ?, ?, ?, ?)";
-        int update = jdbcTemplate.update(createFileSql, file.getUserName(), file.getFile(), file.getFileName(), file.getSize(), file.getDate());
+        String createFileSql = "INSERT INTO files(userName, file, fileType, fileName, size, dateOfCreation) VALUES (?, ?, ?, ?, ?, ?)";
+        int update = jdbcTemplate.update(createFileSql, file.getUserName(), file.getFile(), file.getFileType(), file.getFileName(), file.getSize(), file.getDate());
         if (update == 1) {
             System.out.println("File is created...");
         }
@@ -68,9 +68,9 @@ public class FilesRepositoryImpl implements FilesRepository {
     }
 
     @Override
-    public String getUserFile(String userName, String fileName) {
-        String findFile = "SELECT file FROM files WHERE userName=? AND fileName=?";
-        return jdbcTemplate.queryForObject(findFile, new Object[]{userName, fileName}, String.class);
+    public Files getUserFile(String userName, String fileName) {
+        String findFile = "SELECT * FROM files WHERE userName=? AND fileName=?";
+        return jdbcTemplate.queryForObject(findFile, new Object[]{userName, fileName}, Files.class);
     }
 //    @Override
 //    public List<Files> getAllFiles() {

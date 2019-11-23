@@ -1,5 +1,5 @@
-create database storage;
-use storage;
+create database storagedb;
+use storagdb;
 
 CREATE TABLE files (
     id INTEGER AUTO_INCREMENT,

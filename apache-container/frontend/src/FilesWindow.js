@@ -96,7 +96,7 @@ class FilesWindow extends React.Component {
                     <StorageIndicator percentage={this.props.user.usedStorage} total={this.props.user.totalStorage} />
                 </div>
                 <div className="content-wrapper">
-                    <UploadModal />
+                    <UploadModal user={this.props.user.name} />
                     <div className="files-container">
                         <div className="file-header">
                             <div className="file-item">
@@ -115,7 +115,7 @@ class FilesWindow extends React.Component {
                             </div>
                         </div>
                         <div className="files" id="files-container">
-                            <Files files={this.state.files} />
+                            <Files files={this.state.files} user={this.props.user.name}/>
                         </div>
                     </div>
                 </div>

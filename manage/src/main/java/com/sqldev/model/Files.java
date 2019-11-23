@@ -1,11 +1,15 @@
 package com.sqldev.model;
 
+import java.sql.Date;
+
 public class Files {
     private String userName;
     private String file;
     private String fileName;
     private int size;
-    private String date;
+    private Date date;
+    private String fileType;
+
 
 //    public Files(String userName, String file, String fileName, int size, String date) {
 //        this.userName = userName;
@@ -15,13 +19,6 @@ public class Files {
 //        this.date = date;
 //    }
 
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public int getSize() {
         return size;
@@ -58,5 +55,21 @@ public class Files {
     @Override
     public String toString() {
         return "Data [user name= " + userName + ", file name= " + fileName + ", file name= " + fileName + "]";
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 }

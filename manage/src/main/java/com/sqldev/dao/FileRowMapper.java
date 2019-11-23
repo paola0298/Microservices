@@ -13,9 +13,10 @@ public class FileRowMapper implements RowMapper<Files> {
         Files file = new Files();
         file.setUserName(rs.getString("userName"));
         file.setFile(rs.getString("file"));
+        file.setFileType((rs.getString("fileType")));
         file.setFileName(rs.getString("fileName"));
         file.setSize(rs.getInt("size"));
-        file.setDate(rs.getString("dateOfCreation"));
+        file.setDate(rs.getDate("dateOfCreation"));
         return file;
     }
 }

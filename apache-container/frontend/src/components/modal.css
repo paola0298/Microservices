@@ -48,3 +48,7 @@ form input {
     text-decoration: none;
     cursor: pointer;
 }
+
+.username-input {
+    visibility: hidden;
+}

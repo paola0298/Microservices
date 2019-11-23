@@ -9,8 +9,8 @@ services:
     ports:
       - "80:80"
     depends_on:
-      - authorization
       - db-jdbc
+      - authorization
     networks: 
       - backend
 
